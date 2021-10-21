@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\BlogPost;
 use App\Models\Comment;
+use App\Models\User;
+use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -54,11 +56,13 @@ class PostTest extends TestCase
 
     public function testStoreValid()
     {
-        
+        // create auteh
+        $this->actingAs($this->user());
+
         $params = [
             'title' => 'Valid title',
             'content' => 'At least 10 characters'
-        ];
+        ]; 
 
         $this->post('/posts', $params)
             ->assertStatus(302)
@@ -73,6 +77,9 @@ class PostTest extends TestCase
             'title' => 'x',
             'content' => 'x'
         ];
+
+        // create auteh
+        $this->actingAs($this->user());
 
         $this->post('/posts',$params)
             ->assertStatus(302)
@@ -101,6 +108,9 @@ class PostTest extends TestCase
             'content' => 'Content was changed'
         ];
 
+        // create auteh
+        $this->actingAs($this->user());
+
         $this->put("/posts/{$post->id}",$params)
             ->assertStatus(302)
             ->assertSessionHas('status');
@@ -127,6 +137,9 @@ class PostTest extends TestCase
             'content' => 'Content of the blog post'
         ]);
 
+        // create auteh
+        $this->actingAs($this->user());
+        
         $this->delete("/posts/{$post->id}")
             ->assertStatus(302)
             ->assertSessionHas('status');

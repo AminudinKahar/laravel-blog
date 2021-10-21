@@ -26,7 +26,7 @@
             @else
             <a class="p-2 text-dark" href="{{ route('logout') }}"
                 onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                >Logout</a>
+                >Logout ({{ Auth::user()->name }})</a>
             <form action="{{ route('logout') }}" id="logout-form" method="POST"
                 style="display:none;">
                 @csrf   
