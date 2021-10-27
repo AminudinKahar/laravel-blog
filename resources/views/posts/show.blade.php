@@ -4,7 +4,10 @@
 @section('content')
 <h1>{{ $post->title }}</h1>
 <p>{{ $post->content }}</p>
-<p>Added {{ $post->created_at->diffForHumans() }}</p>
+<p class="text-muted">
+    Added {{ $post->created_at->diffForHumans() }}
+    by {{ $post->user->name }}
+</p>
 
 @if(now()->diffInMinutes($post->created_at) < 5)
 <div class="alert alert-info">New!</div>
@@ -17,7 +20,7 @@
         {{ $comment->content }}
     </p>
     <p class="text-muted">
-        added {{ $comment->created_at->diffForHumans() }}
+        Added {{ $comment->created_at->diffForHumans() }}
     </p>
 @empty
     <p>No comments yet!</p>
