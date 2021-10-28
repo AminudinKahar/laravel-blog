@@ -28,6 +28,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::define('home.secret', function($user) {
+            return $user->is_admin;
+        });
+
         // Gate::define('update-post', function ($user, $post) {
         //     return $user->id == $post->user_id;
         // });
@@ -42,11 +46,11 @@ class AuthServiceProvider extends ServiceProvider
         // Gate::resource('posts',BlogPostPolicy::class);
         //posts.create, posts.view, posts.update, posts.delete
 
-        // Gate::before(function($user, $ability) {
-        //     if ($user->is_admin && in_array($ability,['posts.update'])) {
-        //         return true;
-        //     }
-        // });
+        Gate::before(function($user, $ability) {
+            if ($user->is_admin && in_array($ability,['update'])) {
+                return true;
+            }
+        });
 
 
         // Gate::after(function($user, $ability, $result) {

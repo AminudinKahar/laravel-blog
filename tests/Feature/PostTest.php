@@ -94,8 +94,9 @@ class PostTest extends TestCase
 
     public function testUpdateValid()
     {
+        $user = $this->user();
         //arrange
-        $post = $this->createDummyBlogPost();
+        $post = $this->createDummyBlogPost($user->id);
 
         // $this->assertDatabaseHas('blog_posts', $post->toArray());
         $this->assertDatabaseHas('blog_posts', [
@@ -109,7 +110,7 @@ class PostTest extends TestCase
         ];
 
         // create auteh
-        $this->actingAs($this->user());
+        $this->actingAs($user);
 
         $this->put("/posts/{$post->id}",$params)
             ->assertStatus(302)
@@ -130,7 +131,8 @@ class PostTest extends TestCase
 
     public function testDelete()
     {
-        $post = $this->createDummyBlogPost();
+        $user = $this->user();
+        $post = $this->createDummyBlogPost($user->id);
 
         $this->assertDatabaseHas('blog_posts', [
             'title' => 'New title',
@@ -138,7 +140,7 @@ class PostTest extends TestCase
         ]);
 
         // create auteh
-        $this->actingAs($this->user());
+        $this->actingAs($user);
         
         $this->delete("/posts/{$post->id}")
             ->assertStatus(302)
@@ -156,7 +158,7 @@ class PostTest extends TestCase
         ]);
     }
 
-    private function createDummyBlogPost(): BlogPost
+    private function createDummyBlogPost($userId = null): BlogPost
     {
         // $post = new BlogPost();
         // $post->title = 'New title';
@@ -164,7 +166,11 @@ class PostTest extends TestCase
         // $post->save();
         // return $post; 
              
-        return BlogPost::factory()->newTitle()->create();
+        return BlogPost::factory()->newTitle()->create(
+            [
+                'user_id' => $userId ?? $this->user()->id,
+            ]
+        );
 
     }
 }
