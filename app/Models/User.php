@@ -43,6 +43,14 @@ class User extends Authenticatable
         return $query->withCount('blogPost')->orderBy('blog_post_count','desc');
     }
 
+    public function scopeWithMostBlogPostsLastMonth(Builder $query)
+    {
+        return $query->withCount(['blogPost' => function(Builder $query) {
+            $query->whereBetween(static::CREATED_AT, [now()->subMonths(1),now()]);
+        }])->has('blogPost','>=',2)
+        ->orderBy('blog_post_count','desc');
+    }
+
     /**
      * The attributes that should be cast to native types.
      *
