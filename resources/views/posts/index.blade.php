@@ -15,14 +15,11 @@
         <div class="container">
             {{--  most commented blog posts  --}}
             <div class="row">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                      <h5 class="card-title">Most Commented</h5>
-                      <h6 class="card-text text-muted">
-                          What people are currently talking about
-                        </h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
+                <x-card title="Most Commented">
+                    @slot('subtitle')
+                        What people are currently talking about
+                    @endslot
+                    @slot('items')
                         @foreach ($mostCommented as $post)
                             <li class="list-group-item">
                                 <a href="{{ route('posts.show', ['post' =>$post->id]) }}">
@@ -30,46 +27,29 @@
                                 </a>
                             </li>
                         @endforeach
-                    </ul>
-                </div>
+                    @endslot
+                </x-card>
             </div>
 
             {{--  active user with most post written  --}}
             <div class="row mt-4">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                      <h5 class="card-title">Most Active</h5>
-                      <h6 class="card-text text-muted">
-                          Users with most posts written
-                        </h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @foreach ($mostActive as $user)
-                            <li class="list-group-item">
-                                    {{ $user->name }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
+
+                <x-card title="Most Active">
+                    @slot('subtitle')
+                        Users with most posts written
+                    @endslot
+                    @slot('items', collect($mostActive)->pluck('name'))
+                </x-card>
             </div>
 
             {{--  most active user last month  --}}
             <div class="row mt-4">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                      <h5 class="card-title">Most Active Last Month</h5>
-                      <h6 class="card-text text-muted">
-                          Users with most posts written in the month
-                        </h6>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        @foreach ($mostActiveLastMonth as $user)
-                            <li class="list-group-item">
-                                    {{ $user->name }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
+                <x-card title="Most Active Last Month">
+                    @slot('subtitle')
+                        Users with most posts written in the month
+                    @endslot
+                    @slot('items', collect($mostActiveLastMonth)->pluck('name'))
+                </x-card>
             </div>
             
         </div>
